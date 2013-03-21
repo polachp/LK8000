@@ -98,6 +98,7 @@
 #define LKAIRCRAFT	"DEFAULT_AIRCRAFT.acf"
 #define LKPILOT		"DEFAULT_PILOT.plt"
 #define LKDEVICE	"DEFAULT_DEVICE.dvc"
+#define LKMAP		"DEFAULT_SITE.sit"
 
 /*
  * LK8000 directories
@@ -127,6 +128,7 @@
 #define LKS_AIRCRAFT	".acf"
 #define LKS_DEVICE	".dvc"
 #define LKS_PILOT	".plt"
+#define LKS_PMAPS	".sit"
 #define LKS_AIRSPACES	".txt"
 #define LKS_POLARS	".plr"
 #define LKS_WP_WINPILOT	".dat"
@@ -797,6 +799,7 @@
 #define RUN_SIM_SECONDARY_UNIT	0x22
 #define RUN_EXEC		0x04
 #define RUN_PASSIVE		0x21
+#define RUN_MAPS    0x22
 
 #define LKINFOFONT      LK8SmallFont            // was InfoWindowFont
 // km for distance, kmh for speed etc.  in map overlay

@@ -3572,7 +3572,7 @@ void WndFrame::Paint(HDC hDC){
 
   WindowControl::Paint(hDC);
 
-  if (mCaption != 0){
+  if (mCaption != 0 && mClientCount<=0){
 
     RECT rc;
 

@@ -2574,6 +2574,8 @@ void InputEvents::eventSetup(const TCHAR *misc) {
     SystemConfiguration(1);
   } else if (_tcscmp(misc,TEXT("Device"))==0){
     SystemConfiguration(3);
+  } else if (_tcscmp(misc,TEXT("Maps"))==0){
+    SystemConfiguration(4);
   } else if (_tcscmp(misc,TEXT("Task"))==0){
     dlgTaskOverviewShowModal();
   } else if (_tcscmp(misc,TEXT("Airspace"))==0){

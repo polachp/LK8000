@@ -19,6 +19,7 @@ static TCHAR profilesuffix[10];
 extern void LKAircraftSave(const TCHAR *szFile);
 extern void LKPilotSave(const TCHAR *szFile);
 extern void LKDeviceSave(const TCHAR *szFile);
+extern void LKMapsSave(const TCHAR *szFile);
 
 static void OnSaveExistingClicked(WindowControl * Sender) {
   (void)Sender;
@@ -55,13 +56,16 @@ static void OnSaveExistingClicked(WindowControl * Sender) {
 				LKProfileSave(dfe->GetPathFile());
 				break;
 			case 1:
-                        	LKPilotSave(dfe->GetPathFile());
+				LKPilotSave(dfe->GetPathFile());
 				break;
 			case 2:
-                        	LKAircraftSave(dfe->GetPathFile());
+				LKAircraftSave(dfe->GetPathFile());
 				break;
 			case 3:
-                        	LKDeviceSave(dfe->GetPathFile());
+				LKDeviceSave(dfe->GetPathFile());
+				break;
+			case 4:
+				LKMapsSave(dfe->GetPathFile());
 				break;
 			default:
 				return;
@@ -119,13 +123,16 @@ static void OnSaveNewClicked(WindowControl * Sender) {
 				LKProfileSave(file_name);
 				break;
 			case 1:
-                        	LKPilotSave(file_name);
+				LKPilotSave(file_name);
 				break;
 			case 2:
-                        	LKAircraftSave(file_name);
+				LKAircraftSave(file_name);
 				break;
 			case 3:
-                        	LKDeviceSave(file_name);
+				LKDeviceSave(file_name);
+				break;
+			case 4:
+				LKMapsSave(file_name);
 				break;
 			default:
 				return;
@@ -164,13 +171,16 @@ static void OnSaveNewClicked(WindowControl * Sender) {
 					LKProfileSave(file_name);
 					break;
 				case 1:
-	                        	LKPilotSave(file_name);
+					LKPilotSave(file_name);
 					break;
 				case 2:
-	                        	LKAircraftSave(file_name);
+					LKAircraftSave(file_name);
 					break;
 				case 3:
-	                        	LKDeviceSave(file_name);
+					LKDeviceSave(file_name);
+					break;
+				case 4:
+					LKMapsSave(file_name);
 					break;
 				default:
 					return;
@@ -289,6 +299,11 @@ void dlgProfilesShowModal(short mode){
 			wf->SetCaption(MsgToken(1819)); // Device profiles
 			_stprintf(profilesuffix,_T("%S"),LKS_DEVICE);
 			_stprintf(tsuff,_T("*%S"),LKS_DEVICE);
+			break;
+		case 4:
+			wf->SetCaption(MsgToken(2153)); // Maps profiles
+			_stprintf(profilesuffix,_T("%S"),LKS_PMAPS);
+			_stprintf(tsuff,_T("*%S"),LKS_PMAPS);
 			break;
 		default:
 			return;

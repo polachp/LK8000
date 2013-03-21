@@ -281,8 +281,8 @@ Changed 1220.
 +and deactivated after exiting thermal, even if TRM0 is disabled from rotation.
 +
 
-
 -----------
 After 4.0a changes...
 -----------
 _@M2151_ "T>\nTP Center"
+_@M2152_ "Map\nSetup"

@@ -2814,15 +2814,15 @@ location=11
 mode=SETUP
 type=key
 data=APP1
-label=_@M2127_$(CheckSettingsLockout)
-event=Setup Pilot
+label=
+event=null
 location=1
 
 mode=SETUP
 type=key
 data=APP2
-event=Service SAVEPIL
-label=_@M2128_
+event=null
+label=
 location=2
 
 mode=SETUP
@@ -2849,8 +2849,8 @@ location=5
 mode=SETUP
 type=key
 data=7
-event=Service SAVESYS
-label=_@M2122_
+label=_@M2244_
+event=Setup Device
 location=6
 
 mode=SETUP
@@ -2863,8 +2863,8 @@ location=7
 mode=SETUP
 type=key
 data=9
-label=_@M2126_
-event=Service SAVEAIR
+label=_@M2127_$(CheckSettingsLockout)
+event=Setup Pilot
 location=8
 
 mode=SETUP
@@ -2877,15 +2877,15 @@ location=9
 mode=SETUP
 type=key
 data=11
-label=_@M2244_
-event=Setup Device
+label=Map\nSetup
+event=Setup Maps
 location=10
 
 mode=SETUP
 type=key
 data=12
-label=_@M2245_
-event=Service SAVEDEV
+label=
+event=null
 location=11
 
 # -------------

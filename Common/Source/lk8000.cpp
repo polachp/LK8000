@@ -239,7 +239,8 @@ int WINAPI WinMain(     HINSTANCE hInstance,
   _tcscpy(startPilotFile, defaultPilotFile);
   _stprintf(defaultDeviceFile,_T("%s\\%s\\%s"),LKGetLocalPath(),_T(LKD_CONF),_T(LKDEVICE));
   _tcscpy(startDeviceFile, defaultDeviceFile);
-
+  _stprintf(defaultMapsFile,_T("%s\\%s\\%s"),LKGetLocalPath(),_T(LKD_CONF),_T(LKMAP));
+  _tcscpy(startMapsFile, defaultMapsFile);
 
   LK8000GetOpts(lpCmdLine);
 

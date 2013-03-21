@@ -331,10 +331,12 @@ void Shutdown(void) {
   extern void LKAircraftSave(const TCHAR *szFile);
   extern void LKPilotSave(const TCHAR *szFile);
   extern void LKDeviceSave(const TCHAR *szFile);
+  extern void LKMapsSave(const TCHAR *szFile);
   LKPilotSave(defaultPilotFile);
   LKAircraftSave(defaultAircraftFile);
   LKProfileSave(defaultProfileFile);
   LKDeviceSave(defaultDeviceFile);
+  LKMapsSave(defaultMapsFile);
 
   #if TESTBENCH
   StartupStore(TEXT(". Save_Recent_WP_history%s"),NEWLINE);

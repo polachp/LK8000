@@ -65,6 +65,7 @@ void PreloadInitialisation(bool ask) {
     LKProfileLoad(startAircraftFile);
     LKProfileLoad(startPilotFile);
     LKProfileLoad(startDeviceFile);
+    LKProfileLoad(startMapsFile);
     // if DEFAULT PROFILE does not exist, initialize ResetDefaults!
     // This is because LKProfileLoad will do this at its end, normally.
     // Notice: aircraft and pilot files will not be overridden by defaults

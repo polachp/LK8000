@@ -83,14 +83,10 @@ void LKProfileSave(const TCHAR *szFile)
 
 
   rprintf(szRegistryAcknowledgementTime, AcknowledgementTime);
-  rprintf(szRegistryAdditionalAirspaceFile, szAdditionalAirspaceFile);
-  rprintf(szRegistryAdditionalWayPointFile, szAdditionalWaypointFile);
 //  >> Moved to AircraftFile <<
 //  rprintf(szRegistryAircraftCategory, AircraftCategory);
 //  rprintf(szRegistryAircraftRego, AircraftRego_Config);
 //  rprintf(szRegistryAircraftType, AircraftType_Config);
-  rprintf(szRegistryAirfieldFile, szAirfieldFile); 
-  rprintf(szRegistryAirspaceFile, szAirspaceFile);
   rprintf(szRegistryAirspaceFillType, MapWindow::GetAirSpaceFillType()); 
   rprintf(szRegistryAirspaceOpacity, MapWindow::GetAirSpaceOpacity()); 
   rprintf(szRegistryAirspaceWarningDlgTimeout, AirspaceWarningDlgTimeout);
@@ -226,7 +222,6 @@ void LKProfileSave(const TCHAR *szFile)
   rprintf(szRegistryLKTopoZoomCat90,LKTopoZoomCat90*1000);
   rprintf(szRegistryLKVarioBar,LKVarioBar);
   rprintf(szRegistryLKVarioVal,LKVarioVal);
-  rprintf(szRegistryLanguageFile,szLanguageFile);
   rprintf(szRegistryLatLonUnits, Units::CoordinateFormat);
   rprintf(szRegistryLiftUnitsValue,LiftUnit_Config );
   rprintf(szRegistryLockSettingsInFlight,LockSettingsInFlight);
@@ -235,7 +230,6 @@ void LKProfileSave(const TCHAR *szFile)
   rprintf(szRegistryLoggerTimeStepCruise,LoggerTimeStepCruise);
   rprintf(szRegistryLook8000,Look8000);
   rprintf(szRegistryMapBox,MapBox);
-  rprintf(szRegistryMapFile,szMapFile);
   rprintf(szRegistryMcOverlay,McOverlay);
   rprintf(szRegistryMenuTimeout,MenuTimeout_Config);
   rprintf(szRegistryNewMapDeclutter,NewMapDeclutter);
@@ -286,7 +280,6 @@ void LKProfileSave(const TCHAR *szFile)
   rprintf(szRegistryTeamcodeRefWaypoint,TeamCodeRefWaypoint);
   rprintf(szRegistryTerrainBrightness,TerrainBrightness);
   rprintf(szRegistryTerrainContrast,TerrainContrast);
-  rprintf(szRegistryTerrainFile,szTerrainFile);
   rprintf(szRegistryTerrainRamp,TerrainRamp_Config);
   rprintf(szRegistryThermalBar,ThermalBar);
   rprintf(szRegistryThermalLocator,EnableThermalLocator);
@@ -299,8 +292,6 @@ void LKProfileSave(const TCHAR *szFile)
   rprintf(szRegistryUseUngestures,UseUngestures);
   rprintf(szRegistryUseTotalEnergy,UseTotalEnergy_Config);
   rprintf(szRegistryWarningTime,WarningTime);
-  rprintf(szRegistryWayPointFile,szWaypointFile);
-  rprintf(szRegistryWaypointsOutOfRange,WaypointsOutOfRange);
   rprintf(szRegistryWindCalcSpeed,WindCalcSpeed*1000); // m/s x1000
   rprintf(szRegistryWindCalcTime,WindCalcTime);
 
@@ -522,3 +513,42 @@ void LKDeviceSave(const TCHAR *szFile)
 
 }
 
+//
+// Save only Device related parameters
+//
+void LKMapsSave(const TCHAR *szFile)
+{
+  #if TESTBENCH
+  StartupStore(_T("... MapsSave <%s>%s"),szFile,NEWLINE);
+  #endif
+
+  if (_tcslen(szFile)>0)
+	pfp = _tfopen(szFile, TEXT("wb")); // 'w' will overwrite content, 'b' for no crlf translation
+
+  if(pfp == NULL) {
+	StartupStore(_T("......  MapSaveProfile <%s> open for write FAILED!%s"),szFile,NEWLINE);
+	return;
+  }
+
+  //
+  // Standard header
+  //
+  fprintf(pfp,"### LK8000 MAPS PROFILE - DO NOT EDIT%s",PNEWLINE);
+  fprintf(pfp,"### THIS FILE IS ENCODED IN UTF8%s",PNEWLINE);
+  fprintf(pfp,"LKVERSION=\"%s.%s\"%s",LKVERSION,LKRELEASE,PNEWLINE);
+  fprintf(pfp,"PROFILEVERSION=2%s",PNEWLINE);
+  
+  rprintf(szRegistryMapFile,szMapFile);
+  rprintf(szRegistryTerrainFile,szTerrainFile);
+  rprintf(szRegistryWayPointFile,szWaypointFile);
+  rprintf(szRegistryAdditionalWayPointFile, szAdditionalWaypointFile);
+  rprintf(szRegistryAirspaceFile, szAirspaceFile);
+  rprintf(szRegistryAdditionalAirspaceFile, szAdditionalAirspaceFile);
+  rprintf(szRegistryAirfieldFile, szAirfieldFile); 
+  rprintf(szRegistryWaypointsOutOfRange,WaypointsOutOfRange);
+  rprintf(szRegistryLanguageFile,szLanguageFile);
+  
+  fprintf(pfp,PNEWLINE); // end of file
+  fflush(pfp);
+  fclose(pfp);
+}

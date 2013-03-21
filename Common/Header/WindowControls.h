@@ -577,6 +577,8 @@ class WindowControl {
     TCHAR* GetCaption(void) { return mCaption; };
     int WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+    inline const TCHAR* GetName() const { return mName; }
+    
     virtual void AddClient(WindowControl *Client);
 
     virtual void Paint(HDC hDC);

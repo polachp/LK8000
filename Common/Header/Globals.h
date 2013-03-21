@@ -764,6 +764,8 @@ GEXTERN TCHAR startDeviceFile[MAX_PATH];
 GEXTERN TCHAR defaultDeviceFile[MAX_PATH];
 GEXTERN TCHAR startPilotFile[MAX_PATH];
 GEXTERN TCHAR defaultPilotFile[MAX_PATH];
+GEXTERN TCHAR startMapsFile[MAX_PATH];
+GEXTERN TCHAR defaultMapsFile[MAX_PATH];
 
 //
 // Fonts

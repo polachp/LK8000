@@ -180,6 +180,8 @@ IDR_XML_CONFIGPILOT       XMLDIALOG DISCARDABLE   "../Data/Dialogs/dlgConfigPilo
 IDR_XML_CONFIGPILOT_L     XMLDIALOG DISCARDABLE   "../Data/Dialogs/dlgConfigPilot_L.xml"
 IDR_XML_CONFIGDEVICE       XMLDIALOG DISCARDABLE   "../Data/Dialogs/dlgConfigDevice.xml"
 IDR_XML_CONFIGDEVICE_L     XMLDIALOG DISCARDABLE   "../Data/Dialogs/dlgConfigDevice_L.xml"
+IDR_XML_CONFIGMAPS       XMLDIALOG DISCARDABLE   "../Data/Dialogs/dlgConfigMaps.xml"
+IDR_XML_CONFIGMAPS_L     XMLDIALOG DISCARDABLE   "../Data/Dialogs/dlgConfigMaps_L.xml"
 
 IDR_XML_NUMENTRY_KEYBOARD_L	XMLDIALOG DISCARDABLE "../Data/Dialogs/dlgNumEntry_Keyboard_L.xml"
 IDR_XML_NUMENTRY_KEYBOARD	XMLDIALOG DISCARDABLE "../Data/Dialogs/dlgNumEntry_Keyboard.xml"
