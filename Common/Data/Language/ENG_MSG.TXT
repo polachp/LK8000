@@ -2081,6 +2081,13 @@ _@M2178_ "Base Radius"
 _@M2179_ "Speed Opt."
 _@M2180_ "Thermal Min"
 
+# New Task Type
+_@M2181_ "AAT"
+_@M2182_ "Grand Prix"
+_@M2183_ "Race To Goal"
+_@M2184_ "Default"
+_@M2185_ "Task Type"
+
 # New CustomKey labels for Custom Menu
 _@M2200_ "----"
 _@M2201_ "Menu"

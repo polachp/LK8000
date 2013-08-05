@@ -1828,5 +1828,15 @@ This configuration is used to set sonar mode on startup. Changing the sonar mode
 @1291
 [Conical ESS Base Radius]
 
+@1292
+[Task Type]
+[Default]
+
+[AAT]
+Enables AAT tasks.  When enabled, the AAT observation parameters can be set for each turnpoint.
+[Grand Prix / Race To Goal]
+Common Task Type for Paraglider or Grand Prix Task Type for Glider.
+
+
 @9999
 No help available on this item!

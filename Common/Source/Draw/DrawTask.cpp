@@ -28,7 +28,7 @@ int SecType = SectorType;
 int width = center_x-2;
 HPEN oldpen = 0;
 HBRUSH oldbrush = 0;
-if(AATEnabled)
+if(UseAATTarget())
   oldbrush = (HBRUSH) SelectObject(hdc, LKBrush_LightGrey);
 else
   oldbrush = (HBRUSH) SelectObject(hdc, GetStockObject(HOLLOW_BRUSH));
@@ -86,7 +86,7 @@ GetTaskSectorParameter( TaskIdx, &SecType,&SecRadius);
              FinishRadial);
             break;
         case DAe:
-            if (!AATEnabled) { // this Type exist only if not AAT task
+            if (!UseAATTarget()) { // this Type exist only if not AAT task
                 // JMW added german rules
                 CircleNoCliping(hdc,
                  center_x,
@@ -117,7 +117,7 @@ GetTaskSectorParameter( TaskIdx, &SecType,&SecRadius);
             }
        break;
         case CONE:
-            if (DoOptimizeRoute()) {
+            if (gTaskType==TSK_GP) {
 
                 int radius = width-2;
                 CircleNoCliping(hdc, center_x, center_y, radius, rc, true);
@@ -179,12 +179,6 @@ DoInit[MDI_DRAWTASK]=false;
                 DrawStartEndSector(hdc, rc, Task[i].Start, Task[i].End, Task[i].Index, FinishLine, FinishRadius);
             }
         } else { // normal sector
-            if (AATEnabled != TRUE) {
-                //_DrawLine(hdc, PS_DASH, NIBLSCALE(3), WayPointList[Task[i].Index].Screen, Task[i].Start, RGB_PETROL, rc);
-                //_DrawLine(hdc, PS_DASH, NIBLSCALE(3), WayPointList[Task[i].Index].Screen, Task[i].End, RGB_PETROL, rc);
-         // DrawDashLine(hdc, size_tasklines, WayPointList[Task[i].Index].Screen, Task[i].Start, RGB_PETROL, rc);
-         // DrawDashLine(hdc, size_tasklines, WayPointList[Task[i].Index].Screen, Task[i].End, RGB_PETROL, rc);
-            }
 
             int Type = 0;
             double Radius = 0.;
@@ -206,7 +200,7 @@ DoInit[MDI_DRAWTASK]=false;
                             Task[i].AATFinishRadial - DisplayAngle);
                     break;
                 case DAe:
-                    if (!AATEnabled) { // this Type exist only if not AAT task
+                    if (!UseAATTarget()) { // this Type exist only if not AAT task
                         // JMW added german rules
                         tmp = 500 * zoom.ResScaleOverDistanceModify();
                         Circle(hdc,
@@ -224,7 +218,7 @@ DoInit[MDI_DRAWTASK]=false;
                     }
                     break;
                 case LINE:
-                    if (!AATEnabled) { // this Type exist only if not AAT task
+                    if (!UseAATTarget()) { // this Type exist only if not AAT task
                     	if(ISGAAIRCRAFT) {
                     		POINT start,end;
                     		double rotation=AngleLimit360(Task[i].Bisector-DisplayAngle);
@@ -251,8 +245,8 @@ DoInit[MDI_DRAWTASK]=false;
                     break;
             }
 
-            if (AATEnabled && !DoOptimizeRoute()) {
-                // ELSE HERE IS *** AAT ***
+            if (gTaskType==TSK_AAT) {
+                // ELSE HERE IS   *** AAT ***
                 // JMW added iso lines
                 if ((i == ActiveWayPoint) || (mode.Is(Mode::MODE_TARGET_PAN) && (i == TargetPanIndex))) {
                     // JMW 20080616 flash arc line if very close to target
@@ -297,7 +291,7 @@ DoInit[MDI_DRAWTASK]=false;
         // JMW AAT!
         double bearing = Task[i].OutBound;
         POINT sct1, sct2;
-        if (AATEnabled) {
+        if (UseAATTarget()) {
             LatLon2Screen(Task[i].AATTargetLon,
                     Task[i].AATTargetLat,
                     sct1);

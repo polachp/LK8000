@@ -275,7 +275,7 @@ void MapWindow::CalculateScreenPositions(POINT Orig, RECT rc,
   {
     bool this_valid = ValidTaskPoint(i);
     bool next_valid = ValidTaskPoint(i+1);
-    if (AATEnabled && this_valid) {
+    if (UseAATTarget() && this_valid) {
       LatLon2Screen(Task[i].AATTargetLon, Task[i].AATTargetLat, 
                     Task[i].Target);
     }
@@ -291,12 +291,12 @@ void MapWindow::CalculateScreenPositions(POINT Orig, RECT rc,
       LatLon2Screen(Task[i].SectorEndLon, Task[i].SectorEndLat, Task[i].End);
       LatLon2Screen(Task[i].SectorStartLon, Task[i].SectorStartLat, Task[i].Start);
 
-      if((AATEnabled) && (Task[i].AATType == SECTOR))
+      if((UseAATTarget()) && (Task[i].AATType == SECTOR))
       {
         LatLon2Screen(Task[i].AATStartLon, Task[i].AATStartLat, Task[i].AATStart);
         LatLon2Screen(Task[i].AATFinishLon, Task[i].AATFinishLat, Task[i].AATFinish);
       }
-      if (AATEnabled && (((int)i==ActiveWayPoint) || 
+      if (UseAATTarget() && (((int)i==ActiveWayPoint) || 
 			 (mode.Is(Mode::MODE_TARGET_PAN) && ((int)i==TargetPanIndex)))) {
 
 	for (int j=0; j<MAXISOLINES; j++) {

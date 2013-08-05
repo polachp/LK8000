@@ -30,7 +30,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
     Calculated->LegDistanceCovered = 0;
     Calculated->LegTimeToGo = 0;
 
-    if (!AATEnabled) {
+    if (!gTaskType==TSK_AAT) {
       Calculated->AATTimeToGo = 0;
     }
 
@@ -86,7 +86,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
   double w0lat;
   double w0lon;
   
-  if (AATEnabled && (ActiveWayPoint>0) && (ValidTaskPoint(ActiveWayPoint))) {
+  if (UseAATTarget() && (ActiveWayPoint>0) && (ValidTaskPoint(ActiveWayPoint))) {
     w1lat = Task[ActiveWayPoint].AATTargetLat;
     w1lon = Task[ActiveWayPoint].AATTargetLon;
   } else {
@@ -104,7 +104,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
                   w1lon, 
                   &LegToGo, &LegBearing);
 
-  if (AATEnabled && (ActiveWayPoint>0) && ValidTaskPoint(ActiveWayPoint+1)
+  if (UseAATTarget() && (ActiveWayPoint>0) && ValidTaskPoint(ActiveWayPoint+1)
       && Calculated->IsInSector && (this_maccready>0.1) ) {
     calc_turning_now = true;
   } else {
@@ -118,8 +118,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
       LegToGo=0;
     }
    } else {
-    if (AATEnabled) {
-      LKASSERT((ActiveWayPoint-1)>=0);
+    if (UseAATTarget()) {
       // TODO accuracy: Get best range point to here...
       w0lat = Task[ActiveWayPoint-1].AATTargetLat;
       w0lon = Task[ActiveWayPoint-1].AATTargetLon;
@@ -166,7 +165,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
 
   // Now add distances for start to previous waypoint
  
-    if (!AATEnabled) {
+    if (!UseAATTarget()) {
       for(int i=0;i< ActiveWayPoint-1; i++)
         {
           if (!ValidTaskPoint(i) || !ValidTaskPoint(i+1)) continue;
@@ -230,7 +229,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
 
       this_is_final = true; // JMW CHECK FGAMT
       
-      if (AATEnabled) {
+      if (UseAATTarget()) {
 	w1lat = Task[task_index].AATTargetLat;
 	w1lon = Task[task_index].AATTargetLon;
 	w0lat = Task[task_index-1].AATTargetLat;
@@ -336,7 +335,7 @@ void TaskStatistics(NMEA_INFO *Basic, DERIVED_INFO *Calculated,
 
   // current waypoint, do this last!
 
-  if (AATEnabled && (ActiveWayPoint>0) && ValidTaskPoint(ActiveWayPoint+1) && Calculated->IsInSector) {
+  if (UseAATTarget() && (ActiveWayPoint>0) && ValidTaskPoint(ActiveWayPoint+1) && Calculated->IsInSector) {
 	if (Calculated->WaypointDistance<AATCloseDistance()*3.0) {
 		LegBearing = AATCloseBearing(Basic, Calculated);
 	}

@@ -59,7 +59,7 @@ static void setVariables(void) {
   // LKTOKEN  _@M259_ = "Enabled" 
     dfe->addEnumText(gettext(TEXT("_@M259_")));
     dfe = (DataFieldEnum*)wp->GetDataField();
-    dfe->Set(PGOptimizeRoute);
+    dfe->Set(TskOptimizeRoute);
     wp->RefreshDisplay();
   }
   wp = (WndProperty*)wf->FindByName(TEXT("prpPGNumberOfGates"));
@@ -128,15 +128,11 @@ void dlgTimeGatesShowModal(void){
 
   wp = (WndProperty*)wf->FindByName(TEXT("prpPGOptimizeRoute"));
   if (wp) {
-    if (PGOptimizeRoute != (wp->GetDataField()->GetAsInteger())) {
-      PGOptimizeRoute = (wp->GetDataField()->GetAsInteger());
+    if (TskOptimizeRoute != (wp->GetDataField()->GetAsInteger())) {
+      TskOptimizeRoute = (wp->GetDataField()->GetAsInteger());
       changed = true;
 
-      if (ISPARAGLIDER) {
-	    if(PGOptimizeRoute) {
-		  changed = !AATEnabled;
-		  AATEnabled = true;
-	    }
+      if (gTaskType==TSK_GP) {
         ClearOptimizedTargetPos();
 	  }
 	}

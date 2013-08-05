@@ -271,8 +271,9 @@ void Globals_Init(void) {
   ThermalBar=0;
   McOverlay=true;
   TrackBar=false;
-  PGOptimizeRoute=true;
-  PGOptimizeRoute_Config=true;
+  TskOptimizeRoute=true;
+  TskOptimizeRoute_Config=true;
+
   WindCalcSpeed=0;
   WindCalcTime=WCALC_TIMEBACK;
   RepeatWindCalc=false;
@@ -466,7 +467,6 @@ void Globals_Init(void) {
   RealActiveWaypoint = -1;
   // Assigned Area Task
   AATTaskLength = 120;
-  AATEnabled = FALSE;
   FinishMinHeight = 0;
   StartMaxHeight = 0;
   StartMaxSpeed = 0;

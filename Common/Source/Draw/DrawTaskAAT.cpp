@@ -15,7 +15,7 @@ void MapWindow::DrawTaskAAT(HDC hdc, const RECT rc) {
     double tmp1 = 0.0;
 
     if (!WayPointList) return;
-    if (!AATEnabled) return;
+    if (!UseAATTarget()) return;
 
     HPEN oldpen = 0;
     HBRUSH oldbrush = 0;

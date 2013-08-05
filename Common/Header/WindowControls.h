@@ -273,6 +273,9 @@ class DataFieldEnum: public DataField {
 
   void addEnumText(const TCHAR *Text);
   void addEnumTextNoLF(const TCHAR *Text);
+  
+  void removeLastEnum();
+  unsigned int getCount() const;
 
   int GetAsInteger(void);
   TCHAR *GetAsString(void);

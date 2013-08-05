@@ -203,8 +203,8 @@ GEXTERN int LKVarioBar;
 // This is the value to be used for painting the bar
 GEXTERN int LKVarioVal;
 
-GEXTERN bool PGOptimizeRoute;
-GEXTERN bool PGOptimizeRoute_Config;
+GEXTERN bool TskOptimizeRoute;
+GEXTERN bool TskOptimizeRoute_Config;
 
 GEXTERN short OverlaySize;
 GEXTERN short BarOpacity;
@@ -505,7 +505,7 @@ GEXTERN DWORD StartRadius;
 GEXTERN int FinishLine;
 GEXTERN DWORD FinishRadius;
 GEXTERN double AATTaskLength;
-GEXTERN BOOL AATEnabled;
+GEXTERN int gTaskType GEXTZERO;
 GEXTERN bool EnableFAIFinishHeight;
 GEXTERN DWORD FinishMinHeight;
 GEXTERN DWORD StartMaxHeight;

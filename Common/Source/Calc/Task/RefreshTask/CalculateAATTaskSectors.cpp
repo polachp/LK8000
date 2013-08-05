@@ -19,7 +19,7 @@ void CalculateAATTaskSectors()
   int i;
   int awp = ActiveWayPoint;
 
-  if(AATEnabled == FALSE || DoOptimizeRoute())
+  if(gTaskType == TSK_DEFAULT || DoOptimizeRoute())
     return;
 
   double latitude = GPS_INFO.Latitude;

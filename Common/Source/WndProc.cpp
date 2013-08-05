@@ -392,7 +392,7 @@ void Shutdown(void) {
 
   LockTaskData();
   Task[0].Index = -1;  ActiveWayPoint = -1; 
-  AATEnabled = FALSE;
+  gTaskType = TSK_DEFAULT;
   CloseWayPoints();
   UnlockTaskData();
 

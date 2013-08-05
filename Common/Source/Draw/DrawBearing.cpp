@@ -36,7 +36,7 @@ void MapWindow::DrawBearing(HDC hdc, const RECT rc)
     }
     LockTaskData();
 
-    if (AATEnabled && ( DoOptimizeRoute() || ((ActiveWayPoint>0) && ValidTaskPoint(ActiveWayPoint+1))) ) {
+    if ( DoOptimizeRoute() || ((ActiveWayPoint>0) && ValidTaskPoint(ActiveWayPoint+1))) {
       targetLat = Task[ActiveWayPoint].AATTargetLat;
       targetLon = Task[ActiveWayPoint].AATTargetLon; 
     } else {
@@ -56,7 +56,7 @@ void MapWindow::DrawBearing(HDC hdc, const RECT rc)
       for (int i=ActiveWayPoint+1; i<MAXTASKPOINTS; i++) {
         if (ValidTaskPoint(i)) {
 
-          if (AATEnabled && ValidTaskPoint(i+1)) {
+          if (UseAATTarget() && ValidTaskPoint(i+1)) {
             targetLat = Task[i].AATTargetLat;
             targetLon = Task[i].AATTargetLon; 
           } else {
@@ -75,7 +75,7 @@ void MapWindow::DrawBearing(HDC hdc, const RECT rc)
     }
   }
 
-  if (AATEnabled) {
+  if (UseAATTarget()) {
     // draw symbol at target, makes it easier to see
     LockTaskData();
     if(mode.Is(Mode::MODE_TARGET_PAN)) {

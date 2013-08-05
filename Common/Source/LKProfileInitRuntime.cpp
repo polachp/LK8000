@@ -124,10 +124,10 @@ void LKProfileInitRuntime(void) {
 
 
   if ( ISPARAGLIDER ) {
-	if(PGOptimizeRoute)	AATEnabled=true;
+  	gTaskType=TSK_GP;
 	LoggerTimeStepCruise=1;
   } else {
-	AATEnabled=FALSE;
+	gTaskType=TSK_DEFAULT;
   }
 
   if ( ISPARAGLIDER || ISCAR ) {

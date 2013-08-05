@@ -236,7 +236,7 @@
 #define LKMAXBACKGROUNDS        10
 
 // Task format version
-#define LKTASKVERSION	'3'
+#define LKTASKVERSION	'4'
 // How many chars at the beginning of file are reserved
 #define LKPREAMBOLSIZE	50
 
@@ -931,7 +931,7 @@ extern int Test_NIBLSCALE(short x, const int line, const char *file);
 #define INVERTCOLORS  (Appearance.InverseInfoBox)
 #define TASKINDEX       Task[ActiveWayPoint].Index
 #ifdef GTL2
-#define ACTIVE_WP_IS_AAT_AREA (AATEnabled && (ActiveWayPoint > 0) \
+#define ACTIVE_WP_IS_AAT_AREA (UseAATTarget() && (ActiveWayPoint > 0) \
                               && ValidTaskPoint(ActiveWayPoint + 1))
 #endif
 

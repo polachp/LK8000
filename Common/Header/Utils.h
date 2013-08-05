@@ -260,6 +260,7 @@ bool CheckAlarms(unsigned short al);
 
 void MasterTimeReset(void);
 bool DoOptimizeRoute(void);
+bool UseAATTarget(void);
 TCHAR * WhatTimeIsIt(void);
 void OutOfMemory(const char *where, int line);
 

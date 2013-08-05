@@ -96,7 +96,7 @@ double fXY_Scale = 1.5;
       ScaleXFromValue(rc, x1*fXY_Scale);
       ScaleYFromValue(rc, y1*fXY_Scale);
 
-      if (AATEnabled)
+      if (UseAATTarget())
       {
 	    double aatlat;
 	    double aatlon;
@@ -147,7 +147,7 @@ double fXY_Scale = 1.5;
 
 
   // draw aat areas
-    if (AATEnabled)
+    if (UseAATTarget())
     {
       for (i=MAXTASKPOINTS-1; i>0; i--)
       {
@@ -176,7 +176,7 @@ double fXY_Scale = 1.5;
       }
     }
 
-  if (!AATEnabled)
+  if (!UseAATTarget())
   {
 	for (i=MAXTASKPOINTS-1; i>0; i--)
 	{
@@ -257,7 +257,7 @@ double fXY_Scale = 1.5;
 		  DrawLabel(hdc, rc, text, x1+(x2-x1)/2, y1+(y2-y1)/2);
 		}
 
-		if ((i==ActiveWayPoint)&&(!AATEnabled))
+		if ((i==ActiveWayPoint)&&(!UseAATTarget()))
 		{
 		  lat1 = GPS_INFO.Latitude;
 		  lon1 = GPS_INFO.Longitude;
@@ -270,7 +270,7 @@ double fXY_Scale = 1.5;
 	
 	// draw aat task line
 	
-	if (AATEnabled)
+	if (UseAATTarget())
 	{
 	  for (i=MAXTASKPOINTS-1; i>0; i--)
 	  {

@@ -244,7 +244,7 @@ public:
 protected:
 
   bool CheckCondition(NMEA_INFO *Basic, DERIVED_INFO *Calculated) {    
-    if (DoOptimizeRoute() || !AATEnabled || !ValidTaskPoint(ActiveWayPoint) 
+    if (DoOptimizeRoute() || gTaskType == TSK_GP || !ValidTaskPoint(ActiveWayPoint) 
         || !(Calculated->ValidStart && !Calculated->ValidFinish)
         || !Calculated->Flying) {
       return false;

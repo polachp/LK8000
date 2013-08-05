@@ -110,6 +110,8 @@ void LoadNewTask(LPCTSTR szFileName)
   bool oldversion=false; // 100207
   TCHAR taskFileName[MAX_PATH];
 
+  char bOldTaskType=false;
+
   LockTaskData();
 
   ClearTask();
@@ -140,7 +142,7 @@ void LoadNewTask(LPCTSTR szFileName)
       DWORD old_StartRadius  = StartRadius;
       int   old_AutoAdvance  = AutoAdvance;
       double old_AATTaskLength = AATTaskLength;
-      BOOL   old_AATEnabled  = AATEnabled;
+      int   old_gTaskType  = gTaskType;
       DWORD  old_FinishRadius = FinishRadius;
       int    old_FinishLine = FinishLine;
       bool   old_EnableMultipleStartPoints = EnableMultipleStartPoints;
@@ -153,10 +155,17 @@ void LoadNewTask(LPCTSTR szFileName)
 	}
 
 	// task version check
-	if ( (taskinfo[0]!= 'L') || (taskinfo[1]!= 'K') || (taskinfo[2]!=LKTASKVERSION) ) { 
-		TaskInvalid = true;
-		oldversion = true;
-		goto goEnd;
+	if ( (taskinfo[0]!= 'L') || (taskinfo[1]!= 'K') || (taskinfo[2]!=LKTASKVERSION) ) {
+        if((taskinfo[0]== 'L') && (taskinfo[1]== 'K') && (taskinfo[2]=='3') && (LKTASKVERSION == '4')) {
+            // handle compatibility with old task file
+            StartupStore(_T("--- LoadNewTask: Load Old Type Task%s"),NEWLINE);
+
+            bOldTaskType = true; 
+        } else {
+            TaskInvalid = true;
+            oldversion = true;
+            goto goEnd;
+        }
 	}
 
       for(i=0;i<OLD_MAXTASKPOINTS;i++)
@@ -180,9 +189,18 @@ void LoadNewTask(LPCTSTR szFileName)
 
       if (!TaskInvalid) {
 
-	if (!ReadFile(hFile,&AATEnabled,sizeof(BOOL),&dwBytesRead,(OVERLAPPED*)NULL)) {
-          TaskInvalid = true;
-        }
+          if(bOldTaskType) {
+              BOOL oldAATEnabled=FALSE;
+              if (!ReadFile(hFile,&oldAATEnabled,sizeof(BOOL),&dwBytesRead,(OVERLAPPED*)NULL)) {
+                  TaskInvalid = true;
+              }
+              gTaskType = oldAATEnabled?TSK_AAT:TSK_DEFAULT;
+          } else {
+              if (!ReadFile(hFile,&gTaskType,sizeof(gTaskType),&dwBytesRead,(OVERLAPPED*)NULL)) {
+                  TaskInvalid = true;
+              }
+          }
+          
 	if (!ReadFile(hFile,&AATTaskLength,sizeof(double),&dwBytesRead,(OVERLAPPED*)NULL)) {
           TaskInvalid = true;
         }
@@ -289,7 +307,7 @@ goEnd:
         StartRadius = old_StartRadius;
         AutoAdvance = old_AutoAdvance;
         AATTaskLength = old_AATTaskLength;
-        AATEnabled = old_AATEnabled;
+        gTaskType = old_gTaskType;
         FinishRadius = old_FinishRadius;
         FinishLine = old_FinishLine;
         EnableMultipleStartPoints = old_EnableMultipleStartPoints;

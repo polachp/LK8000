@@ -134,7 +134,7 @@ void LKProfileResetDefault(void) {
 
   AircraftCategory = 0;
 
-  AATEnabled=FALSE;
+  gTaskType=TSK_DEFAULT;
 
   if (ScreenLandscape)
 	Look8000 = (Look8000_t)lxcAdvanced;
@@ -236,8 +236,8 @@ void LKProfileResetDefault(void) {
 
   TrackBar=1;
 
-  PGOptimizeRoute=true;
-  PGOptimizeRoute_Config = true;
+  TskOptimizeRoute=true;
+  TskOptimizeRoute_Config = true;
 
   GlideBarMode = (GlideBarMode_t)gbDisabled;
 

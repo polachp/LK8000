@@ -279,9 +279,8 @@ passthrough:
 		#ifndef DISABLEAUDIO
 		if (EnableSoundModes) PlayResource(TEXT("IDR_WAV_CLICK"));
 		#endif
-		PGOptimizeRoute=!PGOptimizeRoute;
-		if (ISPARAGLIDER && PGOptimizeRoute) {
-			AATEnabled = true;
+		TskOptimizeRoute=!TskOptimizeRoute;
+		if(gTaskType==TSK_GP) {
             ClearOptimizedTargetPos();
 		}
 		return true;

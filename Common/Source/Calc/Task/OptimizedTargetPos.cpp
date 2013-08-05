@@ -41,17 +41,19 @@ void CalculateOptimizedTargetPos(NMEA_INFO *Basic, DERIVED_INFO *Calculated) {
 // Clear PG 
 void ClearOptimizedTargetPos() {
 
-	if (!DoOptimizeRoute())
+	if (!gTaskType==TSK_GP)
 		return;
 
 	LockTaskData();
-
-	WayPointList[RESWP_OPTIMIZED].Latitude=RESWP_INVALIDNUMBER;
-	WayPointList[RESWP_OPTIMIZED].Longitude=RESWP_INVALIDNUMBER;
-	WayPointList[RESWP_OPTIMIZED].Altitude=RESWP_INVALIDNUMBER;
-	// name will be assigned by function dynamically
-	_tcscpy(WayPointList[RESWP_OPTIMIZED].Name, _T("OPTIMIZED") );
-
+    LKASSERT(WayPointList); // hit one time, probably buffer overrun
+    if(WayPointList) {
+        WayPointList[RESWP_OPTIMIZED].Latitude=RESWP_INVALIDNUMBER;
+        WayPointList[RESWP_OPTIMIZED].Longitude=RESWP_INVALIDNUMBER;
+        WayPointList[RESWP_OPTIMIZED].Altitude=RESWP_INVALIDNUMBER;
+        // name will be assigned by function dynamically
+        _tcscpy(WayPointList[RESWP_OPTIMIZED].Name, _T("OPTIMIZED") );
+    }
+    
 	for(int i = 0; ValidWayPoint(Task[i].Index); ++i) {
 		Task[i].AATTargetLat = WayPointList[Task[i].Index].Latitude;
 		Task[i].AATTargetLon = WayPointList[Task[i].Index].Longitude;

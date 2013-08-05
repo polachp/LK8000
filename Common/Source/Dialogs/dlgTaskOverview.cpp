@@ -101,12 +101,12 @@ static void OnTaskPaintListItem(WindowControl * Sender, HDC hDC){
                 WayPointList[Task[i].Index].Name,
                 (WayPointList[Task[i].Index].Flags & LANDPOINT) ? landableStr : TEXT(""));
       
-      if (AATEnabled && ValidTaskPoint(i+1) && (i>0)) {
+      if (UseAATTarget() && ValidTaskPoint(i+1) && (i>0)) {
         if (Task[i].AATType==0) {
           _stprintf(sTmp, TEXT("%s %.1f"), 
                     wpName, Task[i].AATCircleRadius*DISTANCEMODIFY);
         } else {
-          if(Task[i].AATType==2 && DoOptimizeRoute()) {
+          if(Task[i].AATType==2 && (gTaskType==TSK_GP)) {
              _stprintf(sTmp, TEXT("%s %.1f/1"), 
                     wpName, Task[i].PGConeSlope);
           } else {
@@ -148,7 +148,7 @@ static void OnTaskPaintListItem(WindowControl * Sender, HDC hDC){
 		 sTmp, _tcslen(sTmp), NULL);
     } else if ((DrawListIndex==n+1) && ValidTaskPoint(0)) {
 
-      if (!AATEnabled || ISPARAGLIDER) {
+      if (gTaskType!=TSK_AAT) {
 	// LKTOKEN  _@M735_ = "Total:" 
 	_stprintf(sTmp, gettext(TEXT("_@M735_")));
 	ExtTextOut(hDC, Sender->GetHeight()+2*ScreenScale, TextMargin,
@@ -250,6 +250,11 @@ static void OverviewRefreshTask(void) {
   wTaskList->ResetList();
   wTaskList->Redraw();
 
+  WndButton *wb = (WndButton*)wf->FindByName(TEXT("cmdTimegates"));
+  if (wb) wb->SetVisible(gTaskType==TSK_GP);
+  wb = (WndButton*)wf->FindByName(TEXT("cmdDelete"));
+  if (wb) wb->SetVisible(gTaskType!=TSK_GP);
+  
   UpdateCaption();
   UnlockTaskData();
 
@@ -320,7 +325,7 @@ static void OnTaskListEnter(WindowControl * Sender,
 			} else if (isfinish) {
 				dlgTaskWaypointShowModal(ItemIndex, 2, true); // finish waypoint
 			} else {
-				if (AATEnabled || DoOptimizeRoute()) {
+				if (UseAATTarget()) {
 					// only need to set properties for finish
 					dlgTaskWaypointShowModal(ItemIndex, 1, true); // normal waypoint
 				}
@@ -649,17 +654,6 @@ void dlgTaskOverviewShowModal(int Idx){
   }
 
   if (!wf) return;
-
-  WndButton *wb = (WndButton*)wf->FindByName(TEXT("cmdTimegates"));
-  if (wb) wb->SetVisible(false);
-  
-  if (ISPARAGLIDER) {
-	if (PGOptimizeRoute) AATEnabled=true; // force it on
-        EnableMultipleStartPoints=false;
-        if (wb) wb->SetVisible(true);
-	wb = (WndButton*)wf->FindByName(TEXT("cmdDelete"));
-	if (wb) wb->SetVisible(false);
-  }
 
   UpdateCaption();
 

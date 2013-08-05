@@ -668,6 +668,17 @@ void DataFieldEnum::addEnumTextNoLF(const TCHAR *Text) {
   }
 }
 
+void DataFieldEnum::removeLastEnum() {
+    --nEnums;
+    free(mEntries[nEnums].mText);
+    mEntries[nEnums].mText= NULL;
+}
+
+unsigned int DataFieldEnum::getCount() const {
+    return nEnums;
+}
+
+
 TCHAR *DataFieldEnum::GetAsString(void){
   if ((mValue>=0) && (mValue<nEnums)) {
     return(mEntries[mValue].mText);

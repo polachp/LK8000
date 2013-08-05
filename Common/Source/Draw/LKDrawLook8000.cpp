@@ -501,7 +501,7 @@ nextinit:
   if ( Look8000 == (Look8000_t)lxcNoOverlay ) goto drawOverlay;
 
   // PRINT WP TARGET NAME
-  if ( ISPARAGLIDER && UseGates() && ActiveWayPoint==0) {
+  if ( UseGates() && ActiveWayPoint==0) {
 	// if running a task, use the task index normally
 	if ( ValidTaskPoint(ActiveWayPoint) != false ) {
 		if (DoOptimizeRoute())
@@ -625,7 +625,7 @@ nextinit:
 			}
 		}
 
-		if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && (!(ISPARAGLIDER && UseGates())) ) {
+		if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && (!((gTaskType==TSK_GP) && UseGates())) ) {
                   _stprintf(BufferValue + _tcslen(BufferValue), _T(" %s"),BufferUnit);
 			SelectObject(hdc, medFont); 
 			LKWriteText(hdc, BufferValue, rc.right-NIBLSCALE(30),rc.top+NIBLSCALE(1), 0, WTMODE_OUTLINED,WTALIGN_RIGHT,overcolor, true);
@@ -635,7 +635,7 @@ nextinit:
  		GetTextExtentPoint(hdc, BufferValue, _tcslen(BufferValue), &TextSize);
 		if (!HideUnits) {
 			SelectObject(hdc, LKMAPFONT); // TODO FIX BUG here.. using different font from size
-			if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && !(ISPARAGLIDER && UseGates())) {
+			if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && !((gTaskType==TSK_GP) && UseGates())) {
 
 			} else {
 			 LKWriteText(hdc, BufferUnit, rcx+NIBLSCALE(4)+TextSize.cx,rcy+ySizeLK8TargetFont+(ySizeLK8TargetFont/3)-NIBLSCALE(1), 0, WTMODE_OUTLINED, WTALIGN_LEFT, overcolor, true); 
@@ -722,7 +722,7 @@ GetTextExtentPoint(hdc, &BufferValue[len-1], 1, &tsize);
 
 		SelectObject(hdc, bigFont); // use this font for big values
 
-		if ( ISGLIDER) {
+		if (ISGLIDER && (!UseGates() || ActiveWayPoint>0 || !HaveGates())) {
 			switch (OvertargetMode) {
 				case OVT_TASK:
 		 			LKFormatValue(LK_NEXT_GR, false, BufferValue, BufferUnit, BufferTitle);
@@ -829,8 +829,6 @@ GetTextExtentPoint(hdc, &BufferValue[len-1], 1, &tsize);
 	}
 
   // moved out from task paragliders stuff - this is painted on the right
-  if ( ISPARAGLIDER ) {
-
 	if (UseGates()&&ActiveWayPoint==0) {
 		SelectObject(hdc, LK8TargetFont); // use this font for big values
 
@@ -931,7 +929,6 @@ GetTextExtentPoint(hdc, &BufferValue[len-1], 1, &tsize);
 
 		}
 	} // end no UseGates()
-  } // is paraglider
 
 drawOverlay:
   // In place of MC, print gate time
@@ -1178,7 +1175,7 @@ drawOverlay:
 
 	LKFormatValue(LK_TIME_LOCALSEC, false, BufferValue, BufferUnit, BufferTitle);
 
-	if (OverlayClock || (ISPARAGLIDER && UseGates()) ) {
+	if (OverlayClock || ((gTaskType==TSK_GP) && UseGates()) ) {
 		SelectObject(hdc, medFont); 
 		if ( !ScreenLandscape )
 			LKWriteText(hdc, BufferValue, rc.right-NIBLSCALE(10),

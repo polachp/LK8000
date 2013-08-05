@@ -2997,7 +2997,7 @@ static void setVariables(void) {
 	// LKTOKEN  _@M259_ = "Enabled" 
     dfe->addEnumText(gettext(TEXT("_@M259_")));
     dfe = (DataFieldEnum*)wp->GetDataField();
-    dfe->Set(PGOptimizeRoute_Config);
+    dfe->Set(TskOptimizeRoute_Config);
     wp->RefreshDisplay();
   }
 
@@ -4397,14 +4397,9 @@ int ival;
   }
   wp = (WndProperty*)wf->FindByName(TEXT("prpPGOptimizeRoute"));
   if (wp) {
-    if (PGOptimizeRoute_Config != (wp->GetDataField()->GetAsInteger())) {
-      PGOptimizeRoute_Config = (wp->GetDataField()->GetAsInteger());
-      PGOptimizeRoute = PGOptimizeRoute_Config;
-
-      if (ISPARAGLIDER) {
-	    if(PGOptimizeRoute) {
-		  AATEnabled = true;
-	    }
+    if (TskOptimizeRoute != (wp->GetDataField()->GetAsInteger())) {
+      TskOptimizeRoute = (wp->GetDataField()->GetAsInteger());
+      if (gTaskType==TSK_GP) {
         ClearOptimizedTargetPos();
 	  }
 	}
@@ -4909,8 +4904,6 @@ void UpdateAircraftConfig(void){
         (wp->GetDataField()->GetAsInteger());
       requirerestart = true;
 	LKSW_ReloadProfileBitmaps=true;
-
-        if (ISPARAGLIDER) AATEnabled=TRUE; // NOT SURE THIS IS NEEDED ANYMORE. 
     }
   }
 
