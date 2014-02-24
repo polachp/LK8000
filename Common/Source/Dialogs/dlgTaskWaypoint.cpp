@@ -173,7 +173,7 @@ static void SetValues(bool first=false) {
 
   wp = (WndProperty*)wf->FindByName(TEXT("prpEnableMultipleStartPoints"));
   if (wp) {
-    wp->SetVisible(!ISPARAGLIDER);
+    wp->SetVisible(!PGOptimizeRoute);
     wp->GetDataField()->Set(EnableMultipleStartPoints);
     wp->RefreshDisplay();
   }
@@ -194,7 +194,7 @@ static void SetValues(bool first=false) {
   WndButton* wb;
   wb = (WndButton *)wf->FindByName(TEXT("EditStartPoints"));
   if (wb) {
-    wb->SetVisible(EnableMultipleStartPoints!=0 && !ISPARAGLIDER);
+    wb->SetVisible(EnableMultipleStartPoints!=0);
   }
 
 }
@@ -634,7 +634,6 @@ void dlgTaskWaypointShowModal(int itemindex, int tasktype, bool addonly, bool Mo
   if (ISPARAGLIDER) {
     if(DoOptimizeRoute()) 
 		AATEnabled=TRUE;
-	EnableMultipleStartPoints=false;
   }
 
   twItemIndex = itemindex;

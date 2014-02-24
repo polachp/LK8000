@@ -653,9 +653,11 @@ void dlgTaskOverviewShowModal(int Idx){
   if (wb) wb->SetVisible(false);
   
   if (ISPARAGLIDER) {
-	if (PGOptimizeRoute) AATEnabled=true; // force it on
-        EnableMultipleStartPoints=false;
-        if (wb) wb->SetVisible(true);
+	if (PGOptimizeRoute) {
+	  AATEnabled=true; // force it on
+      EnableMultipleStartPoints=false;
+    }
+    if (wb) wb->SetVisible(true);
 	wb = (WndButton*)wf->FindByName(TEXT("cmdDelete"));
 	if (wb) wb->SetVisible(false);
   }

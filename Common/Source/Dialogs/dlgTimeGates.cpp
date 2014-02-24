@@ -134,7 +134,7 @@ void dlgTimeGatesShowModal(void){
 
       if (ISPARAGLIDER) {
 	    if(PGOptimizeRoute) {
-		  changed = !AATEnabled;
+          EnableMultipleStartPoints = false;
 		  AATEnabled = true;
 	    }
         ClearOptimizedTargetPos();
