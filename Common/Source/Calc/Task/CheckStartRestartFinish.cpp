@@ -106,7 +106,7 @@ StartupStore(_T("... CheckStart Timenow=%d OpenTime=%d CloseTime=%d ActiveGate=%
 
   }
 
-  if (ISPARAGLIDER && PGStartOut) {
+  if (DoOptimizeRoute() && PGStartOut) {
 	// start OUT and go in
 	if (!InStartSector(Basic,Calculated,*LastStartSector, &StartCrossed)) {
 		Calculated->IsInSector = false;

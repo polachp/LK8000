@@ -653,8 +653,9 @@ void dlgTaskOverviewShowModal(int Idx){
   WndButton *wb = (WndButton*)wf->FindByName(TEXT("cmdTimegates"));
   if (wb) wb->SetVisible(false);
   
+  if (PGOptimizeRoute) AATEnabled=true; // force it on
+
   if (ISPARAGLIDER) {
-	if (PGOptimizeRoute) AATEnabled=true; // force it on
         EnableMultipleStartPoints=false;
         if (wb) wb->SetVisible(true);
 	wb = (WndButton*)wf->FindByName(TEXT("cmdDelete"));

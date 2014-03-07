@@ -123,8 +123,8 @@ void LKProfileInitRuntime(void) {
   InitActiveGate();
 
 
-  if ( ISPARAGLIDER ) {
 	if(PGOptimizeRoute)	AATEnabled=true;
+  if ( ISPARAGLIDER ) {
 	LoggerTimeStepCruise=1;
   } else {
 	AATEnabled=FALSE;

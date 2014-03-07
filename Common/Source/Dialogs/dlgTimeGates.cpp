@@ -132,13 +132,11 @@ void dlgTimeGatesShowModal(void){
       PGOptimizeRoute = (wp->GetDataField()->GetAsInteger());
       changed = true;
 
-      if (ISPARAGLIDER) {
 	    if(PGOptimizeRoute) {
 		  changed = !AATEnabled;
 		  AATEnabled = true;
 	    }
         ClearOptimizedTargetPos();
-	  }
 	}
   }
   wp = (WndProperty*)wf->FindByName(TEXT("prpPGNumberOfGates"));

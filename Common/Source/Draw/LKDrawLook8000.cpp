@@ -501,7 +501,7 @@ nextinit:
   if ( Look8000 == (Look8000_t)lxcNoOverlay ) goto drawOverlay;
 
   // PRINT WP TARGET NAME
-  if ( ISPARAGLIDER && UseGates() && ActiveWayPoint==0) {
+  if ( UseGates() && ActiveWayPoint==0) {
 	// if running a task, use the task index normally
 	if ( ValidTaskPoint(ActiveWayPoint) != false ) {
 		if (DoOptimizeRoute())
@@ -625,7 +625,7 @@ nextinit:
 			}
 		}
 
-		if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && (!(ISPARAGLIDER && UseGates())) ) {
+		if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && (!(UseGates())) ) {
                   _stprintf(BufferValue + _tcslen(BufferValue), _T(" %s"),BufferUnit);
 			SelectObject(hdc, medFont); 
 			LKWriteText(hdc, BufferValue, rc.right-NIBLSCALE(30),rc.top+NIBLSCALE(1), 0, WTMODE_OUTLINED,WTALIGN_RIGHT,overcolor, true);
@@ -635,7 +635,7 @@ nextinit:
  		GetTextExtentPoint(hdc, BufferValue, _tcslen(BufferValue), &TextSize);
 		if (!HideUnits) {
 			SelectObject(hdc, LKMAPFONT); // TODO FIX BUG here.. using different font from size
-			if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && !(ISPARAGLIDER && UseGates())) {
+			if ( (!OverlayClock || Look8000==lxcStandard) && ScreenLandscape && !(UseGates())) {
 
 			} else {
 			 LKWriteText(hdc, BufferUnit, rcx+NIBLSCALE(4)+TextSize.cx,rcy+ySizeLK8TargetFont+(ySizeLK8TargetFont/3)-NIBLSCALE(1), 0, WTMODE_OUTLINED, WTALIGN_LEFT, overcolor, true); 

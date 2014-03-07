@@ -180,7 +180,7 @@ static void SetValues(bool first=false) {
 
   wp = (WndProperty*)wf->FindByName(TEXT("prpAATEnabled"));
   if (wp) {
-	if (ISPARAGLIDER && PGOptimizeRoute) {
+	if (PGOptimizeRoute) {
 		wp->SetVisible(false);
 		AATEnabled=true;
 		wp->RefreshDisplay(); 
@@ -632,9 +632,9 @@ void dlgTaskWaypointShowModal(int itemindex, int tasktype, bool addonly, bool Mo
                         TEXT("IDR_XML_TASKWAYPOINT"));    
   }
 
-  if (ISPARAGLIDER) {
     if(DoOptimizeRoute()) 
 		AATEnabled=TRUE;
+  if (ISPARAGLIDER) {
 	EnableMultipleStartPoints=false;
   }
 

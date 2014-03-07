@@ -280,7 +280,7 @@ passthrough:
 		if (EnableSoundModes) PlayResource(TEXT("IDR_WAV_CLICK"));
 		#endif
 		PGOptimizeRoute=!PGOptimizeRoute;
-		if (ISPARAGLIDER && PGOptimizeRoute) {
+		if (PGOptimizeRoute) {
 			AATEnabled = true;
             ClearOptimizedTargetPos();
 		}

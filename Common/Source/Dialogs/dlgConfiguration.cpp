@@ -4401,12 +4401,10 @@ int ival;
       PGOptimizeRoute_Config = (wp->GetDataField()->GetAsInteger());
       PGOptimizeRoute = PGOptimizeRoute_Config;
 
-      if (ISPARAGLIDER) {
 	    if(PGOptimizeRoute) {
 		  AATEnabled = true;
 	    }
         ClearOptimizedTargetPos();
-	  }
 	}
   }
 

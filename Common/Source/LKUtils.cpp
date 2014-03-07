@@ -318,7 +318,6 @@ void MasterTimeReset(void) {
 
 bool DoOptimizeRoute() {
 
-  if (AircraftCategory != (AircraftCategory_t)umParaglider) return false;
   if (!PGOptimizeRoute) return false;
 
   if (!ValidTaskPoint(0) || !ValidTaskPoint(1)) return false;
