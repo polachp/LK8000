@@ -13,7 +13,7 @@ extern COLORREF taskcolor;
 
 void MapWindow::DrawStartEndSector(HDC hdc, const RECT& rc,
         const POINT &Start, const POINT &End, int Index,
-        int Type, double Radius) {
+        int Type, double Radius, bool bStart) {
 
     double tmp;
     HPEN oldpen;
@@ -34,6 +34,16 @@ void MapWindow::DrawStartEndSector(HDC hdc, const RECT& rc,
             SelectObject(hdc, oldbrush);
             break;
         case 1: // LINE
+            if(ISGLIDER && gTaskType==TSK_GP && bStart) {
+                // Draw Alphcircle ( Grand Prix Start Style )
+                const POINT center = {Start.x + ((End.x-Start.x)/2), Start.y + ((End.y-Start.y)/2)};
+                tmp = isqrt4((End.x-Start.x)*(End.x-Start.x) + (End.y-Start.y)*(End.y-Start.y))/2;
+                Segment(hdc,
+                            center.x,
+                            center.y, (int) tmp, rc,
+                            Task[0].OutBound+90 - DisplayAngle,
+                            Task[0].OutBound-90 - DisplayAngle);
+            }
             _DrawLine(hdc, PS_SOLID, NIBLSCALE(5), End, Start, taskcolor, rc);
             _DrawLine(hdc, PS_SOLID, NIBLSCALE(1), End, Start, RGB(255, 0, 0), rc);
             break;

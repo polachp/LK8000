@@ -176,7 +176,7 @@ DoInit[MDI_DRAWTASK]=false;
             if (ActiveWayPoint > 1 || !ValidTaskPoint(2)) {
                 // only draw finish line when past the first
                 // waypoint. FIXED 110307: or if task is with only 2 tps
-                DrawStartEndSector(hdc, rc, Task[i].Start, Task[i].End, Task[i].Index, FinishLine, FinishRadius);
+                DrawStartEndSector(hdc, rc, Task[i].Start, Task[i].End, Task[i].Index, FinishLine, FinishRadius, false);
             }
         } else { // normal sector
 
@@ -274,12 +274,12 @@ DoInit[MDI_DRAWTASK]=false;
     }
 
     if ((ActiveWayPoint < 2) && ValidTaskPoint(0) && ValidTaskPoint(1)) {
-        DrawStartEndSector(hdc, rc, Task[0].Start, Task[0].End, Task[0].Index, StartLine, StartRadius);
+        DrawStartEndSector(hdc, rc, Task[0].Start, Task[0].End, Task[0].Index, StartLine, StartRadius, true);
         if (EnableMultipleStartPoints) {
             for (i = 0; i < MAXSTARTPOINTS; i++) {
                 if (StartPoints[i].Active && ValidWayPoint(StartPoints[i].Index)) {
                     DrawStartEndSector(hdc, rc, StartPoints[i].Start, StartPoints[i].End,
-                            StartPoints[i].Index, StartLine, StartRadius);
+                            StartPoints[i].Index, StartLine, StartRadius, false);
                 }
             }
         }

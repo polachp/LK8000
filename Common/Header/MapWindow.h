@@ -610,7 +610,7 @@ class MapWindow {
   static void DrawProjectedTrack(HDC hdc, const RECT rc, const POINT Orig);
   static void DrawStartEndSector(HDC hdc, const RECT& rc, 
                                     const POINT &Start, const POINT &End, int Index, 
-                                    int Type, double Radius);
+                                    int Type, double Radius, bool bStart);
   static void DrawTask(HDC hdc, RECT rc, const POINT &Orig_Aircraft);
   static void DrawTaskSectors(HDC hdc, RECT rc ) ;
   static void DrawFAIOptimizer(HDC hdc, RECT rc, const POINT &Orig_Aircraft) ;
