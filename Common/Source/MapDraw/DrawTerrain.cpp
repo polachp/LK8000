@@ -114,10 +114,10 @@ inline void TerrainShading(const short illum, uint8_t &r, uint8_t &g, uint8_t &b
 // Returning from constructor without setting terrain_ready will result in no draw terrain.
 //
 class TerrainRenderer {
-  TerrainRenderer(const TerrainRenderer &);             // disallowed
-  TerrainRenderer &operator=(const TerrainRenderer &);  // disallowed
+  TerrainRenderer(const TerrainRenderer &) = delete;             // disallowed
+  TerrainRenderer &operator=(const TerrainRenderer &) = delete;  // disallowed
 public:
-  TerrainRenderer(RECT rc) {
+  TerrainRenderer(const RECT& rc) {
 
     #if (WINDOWSPC>0) && TESTBENCH
     StartupStore(_T(".... Init TerrainRenderer area (%ld,%ld) (%ld,%ld)\n"),rc.left,rc.top,rc.right,rc.bottom);
@@ -288,10 +288,10 @@ public:
 
     double X, Y;
     int x, y; 
-    int X0 = (unsigned int)(dtquant/2); 
-    int Y0 = (unsigned int)(dtquant/2);
-    int X1 = (unsigned int)(X0+dtquant*ixs);
-    int Y1 = (unsigned int)(Y0+dtquant*iys);
+    const int X0 = (unsigned int)(dtquant/2); 
+    const int Y0 = (unsigned int)(dtquant/2);
+    const int X1 = (unsigned int)(X0+dtquant*ixs);
+    const int Y1 = (unsigned int)(Y0+dtquant*iys);
 
     unsigned int rfact=1;
 
@@ -316,8 +316,8 @@ public:
     x = (X0+X1)/2;
     y = (Y0+Y1)/2;
     MapWindow::Screen2LatLon(x, y, X, Y);
-    double xmiddle = X;
-    double ymiddle = Y;
+    const double xmiddle = X;
+    const double ymiddle = Y;
     int dd = (int)lround(dtquant*rfact);
 
     x = (X0+X1)/2+dd;
@@ -384,7 +384,7 @@ public:
       //StartupStore(_T("..... Scale=%.3f RealScale=%.3f\n"),MapWindow::zoom.Scale(),MapWindow::zoom.RealScale());
     }
 
-    POINT orig = MapWindow::GetOrigScreen();
+    const POINT orig = MapWindow::GetOrigScreen();
 
     rect_visible.left = max((long)MapWindow::MapRect.left, (long)(MapWindow::MapRect.left-(long)epx*dtquant))-orig.x;
     rect_visible.right = min((long)MapWindow::MapRect.right, (long)(MapWindow::MapRect.right+(long)epx*dtquant))-orig.x;
@@ -422,14 +422,10 @@ void FillHeightBuffer(const int X0, const int Y0, const int X1, const int Y1) {
   #else
   const RECT crect_visible = rect_visible;
   #endif
-  minalt=9999;
+  minalt=TERRAIN_INVALID;
   for (int y = Y0; y<Y1; y+= dtquant) {
-	//int ycost = y*cost;  // REMOVE COMMENTED LINES AFTER DECEMBER 2012
-	//int ysint = y*sint;
-	//1: double ac1= PanLatitude- ycost*InvDrawScale;
-	//2: double ac1= PanLatitude- y*cost*InvDrawScale;
-	double ac1= PanLatitude- y*ac3;
-	double cc1= y * ac2;
+	const double ac1= PanLatitude- y*ac3;
+	const double cc1= y * ac2;
 
 	for (int x = X0; x<X1; x+= dtquant, myhbuf++) {
 		#if USERASTERCACHE
@@ -451,7 +447,7 @@ void FillHeightBuffer(const int X0, const int Y0, const int X1, const int Y1) {
 
 			//1: double Y = PanLatitude - (ycost+x*sint)*InvDrawScale;
 			//2: double Y = PanLatitude - (ycost*InvDrawScale) - (x*sint*InvDrawScale)
-			double Y = ac1 - x*ac2;
+			const double Y = ac1 - x*ac2;
 
 			//1: sums=2    mult=3
 			//1: double X = PanLongitude + (x*cost-ysint)*invfastcosine(Y)*InvDrawScale;
@@ -463,7 +459,7 @@ void FillHeightBuffer(const int X0, const int Y0, const int X1, const int Y1) {
 			//6: double X = PanLongitude + x*bc1*ac3 - cc1*bc1;
 			//7: double X = PanLongitude + bc1*(x*ac3) - bc1*(cc1);
 			//8: double X = PanLongitude + bc1* (x*ac3 - cc1);
-			double X = PanLongitude + ( invfastcosine(Y) * ((x*ac3)-cc1) );
+            const double X = PanLongitude + ( invfastcosine(Y) * ((x*ac3)-cc1) );
 			
 
 			// this is setting to 0 any negative terrain value and can be a problem for dutch people
@@ -507,14 +503,14 @@ void FillHeightBuffer(const int X0, const int Y0, const int X1, const int Y1) {
 void Slope(const int sx, const int sy, const int sz) {
 
   LKASSERT(hBuf!=NULL);
-  const int iepx = (int)epx;
+
   const unsigned int cixs=ixs;
 
   const unsigned int ciys = iys;
   
   const unsigned int ixsepx = cixs*epx;
-  const unsigned int ixsright = cixs-1-iepx;
-  const unsigned int iysbottom = ciys-iepx;
+  const unsigned int ixsright = cixs-epx;
+  const unsigned int iysbottom = ciys-epx;
   const int hscale = max(1,(int)(pixelsize_d)); 
   const int tc = TerrainContrast;
   unsigned short *thBuf = hBuf;
@@ -535,14 +531,14 @@ void Slope(const int sx, const int sy, const int sz) {
 	int p31, p32, p31s;
 
 	if (y<iysbottom) {
-		p31= iepx;
+		p31= epx;
 		ybottom = true;
 	} else {
 		p31= itss_y;
 	}
 
-	if (y >= (unsigned int) iepx) {
-		p31+= iepx;
+	if (y >= epx) {
+		p31+= epx;
 	} else {
 		p31+= y;
 		ytop = true;
@@ -564,24 +560,24 @@ void Slope(const int sx, const int sy, const int sz) {
 			}
 			h=h-minalt+1;
 
-			int p20, p22;
-
 			h = min(255, h>>height_scale);
 			// no need to calculate slope if undefined height or sea level
 
 			if (do_shading) {
+                int p20, p22;
+
 				if (x<ixsright) {
-					p20= iepx;
-					p22= *(thBuf+iepx);
+					p20= epx;
+					p22= *(thBuf+epx);
 				} else {
 					int itss_x = cixs-x-2;
 					p20= itss_x;
 					p22= *(thBuf+itss_x);
 				} 
             
-				if (x >= (unsigned int)iepx) {
-					p20+= iepx;
-					p22-= *(thBuf-iepx);
+				if (x >= epx) {
+					p20+= epx;
+					p22-= *(thBuf-epx);
 				} else {
 					p20+= x;
 					p22-= *(thBuf-x);

@@ -36,7 +36,7 @@ class RasterMap {
   }
   virtual ~RasterMap() {};
 
-  inline bool isMapLoaded() {
+  inline bool isMapLoaded() const {
     return terrain_valid;
   }
 
@@ -46,21 +46,20 @@ class RasterMap {
   virtual void SetViewCenter(const double &Latitude, 
                              const double &Longitude) {};
 
-  bool GetMapCenter(double *lon, double *lat);
+  bool GetMapCenter(double *lon, double *lat) const;
 
-  float GetFieldStepSize();
+  float GetFieldStepSize() const;
 
   // inaccurate method
-  int GetEffectivePixelSize(double pixelsize);
+  int GetEffectivePixelSize(double pixelsize) const;
 
   // accurate method
   int GetEffectivePixelSize(double *pixel_D, 
-                            double latitude, double longitude);
+                            double latitude, double longitude) const;
   
   virtual void SetFieldRounding(double xr, double yr);
 
-  short GetField(const double &Latitude, 
-                 const double &Longitude);
+  short GetField(const double &Latitude,  const double &Longitude) const;
 
   virtual bool Open(const TCHAR* filename) = 0;
   virtual void Close() = 0;
@@ -68,8 +67,8 @@ class RasterMap {
   virtual void Unlock() = 0;
   virtual void ServiceCache() {};
   virtual void ServiceFullReload(double lat, double lon) {};
-  bool IsDirectAccess(void) { return DirectAccess; };
-  bool IsPaged(void) { return Paged; };
+  bool IsDirectAccess(void) const { return DirectAccess; };
+  bool IsPaged(void) const { return Paged; };
 
  protected:
   int xlleft;
@@ -82,8 +81,7 @@ class RasterMap {
   double fXroundingFine, fYroundingFine;
   int Xrounding, Yrounding;
 
-  virtual short _GetFieldAtXY(unsigned int lx,
-                              unsigned int ly) = 0;
+  virtual short _GetFieldAtXY(unsigned int lx, unsigned int ly) const = 0;
 };
 
 #if RASTERCACHE
@@ -157,7 +155,7 @@ class RasterMapRaw: public RasterMap {
   void Unlock();
  protected:
   virtual short _GetFieldAtXY(unsigned int lx,
-                              unsigned int ly);
+                              unsigned int ly) const;
   Poco::Mutex  CritSec_TerrainFile;
 };
 

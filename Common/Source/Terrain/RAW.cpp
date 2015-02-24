@@ -34,19 +34,19 @@ void RasterMapRaw::SetFieldRounding(double xr, double yr) {
 
 
 short RasterMapRaw::_GetFieldAtXY(unsigned int lx,
-                                  unsigned int ly) {
+                                  unsigned int ly) const {
 
-  uint32_t ix = CombinedDivAndMod(lx);
-  uint32_t iy = CombinedDivAndMod(ly);
+  const uint32_t ix = CombinedDivAndMod(lx);
+  const uint32_t iy = CombinedDivAndMod(ly);
   
   if ((ly>=TerrainInfo.Rows)
       ||(lx>=TerrainInfo.Columns)) {
     return TERRAIN_INVALID;
   } 
   
-  short *tm = TerrainMem+ly*TerrainInfo.Columns+lx;
+  const short *tm = TerrainMem+ly*TerrainInfo.Columns+lx;
   // perform piecewise linear interpolation
-  int h1 = *tm; // (x,y)
+  const int h1 = *tm; // (x,y)
   
   if (!ix && !iy) {
     return h1;
@@ -57,14 +57,14 @@ short RasterMapRaw::_GetFieldAtXY(unsigned int lx,
   if (ly+1 >= TerrainInfo.Rows) {
     return h1;
   }
-  int h3 = tm[TerrainInfo.Columns+1]; // (x+1, y+1)
+  const int h3 = tm[TerrainInfo.Columns+1]; // (x+1, y+1)
   if (ix>iy) {
     // lower triangle 
-    int h2 = tm[1]; // (x+1,y)
+    const int h2 = tm[1]; // (x+1,y)
     return (short)(h1+((ix*(h2-h1)-iy*(h2-h3))>>8));
   } else {
     // upper triangle
-    int h4 = tm[TerrainInfo.Columns]; // (x,y+1)
+    const int h4 = tm[TerrainInfo.Columns]; // (x,y+1)
     return (short)(h1+((iy*(h4-h1)-ix*(h4-h3))>>8));
   }
 }
