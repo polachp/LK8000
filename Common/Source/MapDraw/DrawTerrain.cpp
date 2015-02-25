@@ -237,7 +237,7 @@ private:
   unsigned int dtquant;
   unsigned int epx; // step size used for slope calculations
 
-  RECT rect_visible;
+  PixelRect rect_visible;
 
   CSTScreenBuffer *sbuf;
 
@@ -386,10 +386,9 @@ public:
 
     const POINT orig = MapWindow::GetOrigScreen();
 
-    rect_visible.left = max((long)MapWindow::MapRect.left, (long)(MapWindow::MapRect.left-(long)epx*dtquant))-orig.x;
-    rect_visible.right = min((long)MapWindow::MapRect.right, (long)(MapWindow::MapRect.right+(long)epx*dtquant))-orig.x;
-    rect_visible.top = max((long)MapWindow::MapRect.top, (long)(MapWindow::MapRect.top-(long)epx*dtquant))-orig.y;
-    rect_visible.bottom = min((long)MapWindow::MapRect.bottom, (long)(MapWindow::MapRect.bottom+(long)epx*dtquant))-orig.y;
+    rect_visible = MapWindow::MapRect;
+    rect_visible.Grow(epx*dtquant);
+    rect_visible.Offset(-orig.x, -orig.y);
 
     FillHeightBuffer(X0-orig.x, Y0-orig.y, X1-orig.x, Y1-orig.y);
 
@@ -418,62 +417,31 @@ void FillHeightBuffer(const int X0, const int Y0, const int X1, const int Y1) {
   const double ac2 = sint*InvDrawScale;
   const double ac3 = cost*InvDrawScale;
 
-  #if USERASTERCACHE
-  #else
-  const RECT crect_visible = rect_visible;
-  #endif
   minalt=TERRAIN_INVALID;
   for (int y = Y0; y<Y1; y+= dtquant) {
 	const double ac1= PanLatitude- y*ac3;
 	const double cc1= y * ac2;
 
 	for (int x = X0; x<X1; x+= dtquant, myhbuf++) {
-		#if USERASTERCACHE
-		if ((x>= rect_visible.left) &&
-			(x<= rect_visible.right) &&
-			(y>= rect_visible.top) &&
-			(y<= rect_visible.bottom)) {
-		#else
-		if ((x>= crect_visible.left) &&
-			(x<= crect_visible.right) &&
-			(y>= crect_visible.top) &&
-			(y<= crect_visible.bottom)) {
-		#endif
-			#if TDEBUG
-			#if (WINDOWSPC>0)
-			LKASSERT(myhbuf<hBufTop);
-			#endif
-			#endif
+        assert((unsigned)(myhbuf - hBuf) < (ixs * iys));
+        
+        if(gcc_likely(rect_visible.IsInside({x,y}))) {
 
-			//1: double Y = PanLatitude - (ycost+x*sint)*InvDrawScale;
-			//2: double Y = PanLatitude - (ycost*InvDrawScale) - (x*sint*InvDrawScale)
-			const double Y = ac1 - x*ac2;
-
-			//1: sums=2    mult=3
-			//1: double X = PanLongitude + (x*cost-ysint)*invfastcosine(Y)*InvDrawScale;
-			//2: double X = PanLongitude + (x*cost)*invfastcosine(Y)*InvDrawScale - ysint*invfastcosine(Y)*InvDrawScale;
-			//3: double X = PanLongitude + x*invfastcosine(Y)*cost*InvDrawScale - y*invfastcosine(Y)*sint*InvDrawScale;
-			//4: double X = PanLongitude + x*invfastcosine(Y)*ac3 - y*invfastcosine(Y)*ac2;
-			//   int bc1=invfastcosine(Y);
-			//5: double X = PanLongitude + x*bc1*ac3 - y*bc1*ac2;
-			//6: double X = PanLongitude + x*bc1*ac3 - cc1*bc1;
-			//7: double X = PanLongitude + bc1*(x*ac3) - bc1*(cc1);
-			//8: double X = PanLongitude + bc1* (x*ac3 - cc1);
+            const double Y = ac1 - x*ac2;
             const double X = PanLongitude + ( invfastcosine(Y) * ((x*ac3)-cc1) );
-			
 
-			// this is setting to 0 any negative terrain value and can be a problem for dutch people
-			// myhbuf cannot load negative values!
-			*myhbuf = max(0, (int)DisplayMap->GetField(Y,X));
-			if (*myhbuf!=TERRAIN_INVALID) {
-				// if (*myhbuf>maxalt) maxalt=*myhbuf;
-				if (*myhbuf<minalt) minalt=*myhbuf;
-			}
+            // this is setting to 0 any negative terrain value and can be a problem for dutch people
+            // myhbuf cannot load negative values!
+            *myhbuf = max((short)0, DisplayMap->GetField(Y,X));
+
+            // TERRAIN_INVALID is maxshort, so no need to test
+            if ( (*myhbuf) < minalt ) {
+                minalt = (*myhbuf);
+            }
 		} else {
 			// invisible terrain
 			*myhbuf = TERRAIN_INVALID;
-		}
-
+		}	
 	}
   }
 
@@ -552,7 +520,7 @@ void Slope(const int sx, const int sy, const int sz) {
 
 		// FIX here Netherland dutch terrain problem
 		// if >=0 then the sea disappears...
-		if ((h = *thBuf) != TERRAIN_INVALID ) { 
+		if ( gcc_likely((h = *thBuf) != TERRAIN_INVALID ) ) { 
 			// if (h==0 && LKWaterThreshold==0) { // no LKM coasts, and water altitude
 			if (h==LKWaterThreshold) { // see above.. h cannot be -1000.. so only when LKW is 0 h can be equal
 				*imageBuf = BGRColor(85,160,255); // set water color 
