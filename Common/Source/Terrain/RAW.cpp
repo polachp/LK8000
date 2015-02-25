@@ -39,8 +39,8 @@ short RasterMapRaw::_GetFieldAtXY(unsigned int lx,
   const uint32_t ix = CombinedDivAndMod(lx);
   const uint32_t iy = CombinedDivAndMod(ly);
   
-  if ((ly>=TerrainInfo.Rows)
-      ||(lx>=TerrainInfo.Columns)) {
+  if( gcc_unlikely((ly>=TerrainInfo.Rows)
+      ||(lx>=TerrainInfo.Columns)) ) {
     return TERRAIN_INVALID;
   } 
   
@@ -48,13 +48,13 @@ short RasterMapRaw::_GetFieldAtXY(unsigned int lx,
   // perform piecewise linear interpolation
   const int h1 = *tm; // (x,y)
   
-  if (!ix && !iy) {
+  if( gcc_unlikely(!ix && !iy) ) {
     return h1;
   }
-  if (lx+1 >= TerrainInfo.Columns) {
+  if( gcc_unlikely(lx+1 >= TerrainInfo.Columns) ) {
     return h1;
   }
-  if (ly+1 >= TerrainInfo.Rows) {
+  if( gcc_unlikely(ly+1 >= TerrainInfo.Rows) ) {
     return h1;
   }
   const int h3 = tm[TerrainInfo.Columns+1]; // (x+1, y+1)

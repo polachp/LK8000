@@ -59,7 +59,54 @@ extern short ICOSTABLE[4096];
 
 
 
-unsigned int isqrt4(unsigned long val);
+// http://www.azillionmonkeys.com/qed/sqroot.html
+inline unsigned int isqrt4(unsigned long val) {
+#if defined(__i386__) || defined(__x86_64__)
+  /* x86 FPUs are extremely fast */ 
+  return (unsigned)sqrt((double)val);
+#elif defined( __ARM_FP) 
+  /* use vfp vsqrt.f32 instruction, 14 cycle !! */
+  float result;
+  const float fval = val;
+  __asm ("vsqrt.f32 %0, %1" : "=w" (result) : "w" (fval) ); 
+  return(result);
+#else
+  unsigned int temp, g=0;
+
+  if (val >= 0x40000000) {
+    g = 0x8000;
+    val -= 0x40000000;
+  }
+
+#define INNER_MBGSQRT(s)                      \
+  temp = (g << (s)) + (1 << ((s) * 2 - 2));   \
+  if (val >= temp) {                          \
+    g += 1 << ((s)-1);                        \
+    val -= temp;                              \
+  }
+
+  INNER_MBGSQRT (15)
+  INNER_MBGSQRT (14)
+  INNER_MBGSQRT (13)
+  INNER_MBGSQRT (12)
+  INNER_MBGSQRT (11)
+  INNER_MBGSQRT (10)
+  INNER_MBGSQRT ( 9)
+  INNER_MBGSQRT ( 8)
+  INNER_MBGSQRT ( 7)
+  INNER_MBGSQRT ( 6)
+  INNER_MBGSQRT ( 5)
+  INNER_MBGSQRT ( 4)
+  INNER_MBGSQRT ( 3)
+  INNER_MBGSQRT ( 2)
+
+#undef INNER_MBGSQRT
+
+  temp = g+g+1;
+  if (val >= temp) g++;
+  return g;
+#endif
+}
 
 int  roundupdivision(int a, int b);
 

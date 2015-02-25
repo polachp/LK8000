@@ -89,7 +89,7 @@ class RasterMap {
 inline 
 short RasterMap::GetField(const double &Latitude, const double &Longitude) const
 {
-  if(isMapLoaded()) {
+  if(gcc_likely(isMapLoaded())) {
     if (DirectFine) {
       return _GetFieldAtXY((int)(Longitude*fXroundingFine)-xlleft,
                            xlltop- (int)(Latitude*fYroundingFine));
