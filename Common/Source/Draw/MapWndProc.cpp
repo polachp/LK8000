@@ -172,7 +172,7 @@ POINT targetScreen;
 
 void MapWindow::_OnSize(int cx, int cy) {
     // this is Used for check Thread_Draw don't use surface object.
-    Poco::FastMutex::ScopedLock Lock(Surface_Mutex);
+    Poco::Mutex::ScopedLock Lock(Surface_Mutex);
 
     BackBufferSurface.Resize(cx, cy);
     DrawSurface.Resize(cx, cy);

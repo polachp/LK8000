@@ -22,7 +22,7 @@ BOOL MapWindow::THREADRUNNING = TRUE;
 BOOL MapWindow::THREADEXIT = FALSE;
 BOOL MapWindow::Initialised = FALSE;
 
-Poco::FastMutex MapWindow::Surface_Mutex;
+Poco::Mutex MapWindow::Surface_Mutex;
 
 extern bool PanRefreshed;
 bool ForceRenderMap=true;
@@ -51,7 +51,7 @@ void MapWindow::DrawThread ()
   UpdateTimeStats(true);
 
   { // // Begin Critical section
-    Poco::FastMutex::ScopedLock Lock(Surface_Mutex);
+    Poco::Mutex::ScopedLock Lock(Surface_Mutex);
 
     DrawSurface.SetBackgroundTransparent();
     hdcMask.SetBackgroundOpaque();
@@ -95,7 +95,7 @@ void MapWindow::DrawThread ()
     const ScopeLockCPU cpu;
 #endif
   
-    Poco::FastMutex::ScopedLock Lock(Surface_Mutex);
+    Poco::Mutex::ScopedLock Lock(Surface_Mutex);
 	// This is also occuring on resolution change
 	if (LKSW_ReloadProfileBitmaps) {
 		#if TESTBENCH

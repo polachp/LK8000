@@ -76,7 +76,7 @@ void ReinitScreen(void) {
   StartupStore(_T("... ChangeScreen suspending Draw Thread\n"));
   #endif
   MapWindow::SuspendDrawingThread();
-  Poco::FastMutex::ScopedLock Lock(MapWindow::Surface_Mutex);
+  Poco::Mutex::ScopedLock Lock(MapWindow::Surface_Mutex);
 
 
   // MapWndProc will get a WM_SIZE 
